@@ -1,0 +1,31 @@
+{
+  "date": null,
+  "run": null,
+  "regime": {
+    "vix": null,
+    "vix_200ma": null,
+    "vix_above_200ma": null,
+    "spy_price": null,
+    "spy_50ma": null,
+    "spy_200ma": null,
+    "spy_above_50ma": null,
+    "spy_above_200ma": null,
+    "mode": "unknown"
+  },
+  "sector_rankings": [
+    {"sector": "XLK", "name": "Technology", "score": null, "above_50ma": null, "rank": null},
+    {"sector": "XLF", "name": "Financials", "score": null, "above_50ma": null, "rank": null},
+    {"sector": "XLV", "name": "Healthcare", "score": null, "above_50ma": null, "rank": null},
+    {"sector": "XLE", "name": "Energy", "score": null, "above_50ma": null, "rank": null},
+    {"sector": "XLI", "name": "Industrials", "score": null, "above_50ma": null, "rank": null},
+    {"sector": "XLC", "name": "Communication Services", "score": null, "above_50ma": null, "rank": null},
+    {"sector": "XLY", "name": "Consumer Discretionary", "score": null, "above_50ma": null, "rank": null},
+    {"sector": "XLP", "name": "Consumer Staples", "score": null, "above_50ma": null, "rank": null},
+    {"sector": "XLU", "name": "Utilities", "score": null, "above_50ma": null, "rank": null},
+    {"sector": "XLRE", "name": "Real Estate", "score": null, "above_50ma": null, "rank": null},
+    {"sector": "XLB", "name": "Materials", "score": null, "above_50ma": null, "rank": null}
+  ],
+  "momentum_candidates": [],
+  "mean_reversion_candidates": [],
+  "pead_candidates": []
+}

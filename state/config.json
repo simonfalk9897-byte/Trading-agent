@@ -1,0 +1,77 @@
+{
+  "mode": "live",
+  "broker": "alpaca",
+  "benchmark": "SPY",
+
+  "launch_week": {
+    "enabled": true,
+    "duration_days": 5,
+    "max_risk_per_trade_pct": 1.0,
+    "max_new_entries_per_day": 1,
+    "max_invested_pct": 50.0,
+    "telegram_every_run": true
+  },
+
+  "risk": {
+    "max_risk_per_trade_pct": 3.0,
+    "max_position_pct": 10.0,
+    "max_sector_pct": 30.0,
+    "min_cash_pct": 20.0,
+    "drawdown_half_size_pct": 10.0,
+    "drawdown_pause_pct": 15.0,
+    "drawdown_stop_pct": 20.0,
+    "pause_duration_days": 2,
+    "vix_defensive_threshold": 30.0
+  },
+
+  "momentum": {
+    "allocation_pct": 60.0,
+    "trailing_stop_pct": 8.0,
+    "trailing_stop_tight_pct": 5.0,
+    "time_stop_days": 20,
+    "min_gain_for_time_stop_pct": 2.0,
+    "max_new_entries_per_day": 2,
+    "rsi14_min": 40,
+    "rsi14_max": 70,
+    "sector_etfs": ["XLK", "XLF", "XLV", "XLE", "XLI", "XLC", "XLY", "XLP", "XLU", "XLRE", "XLB"],
+    "top_n_sectors": 3,
+    "stocks_per_sector": 3,
+    "momentum_weights": {
+      "1_month": 0.33,
+      "3_month": 0.33,
+      "6_month": 0.34
+    }
+  },
+
+  "mean_reversion": {
+    "allocation_pct": 40.0,
+    "hard_stop_pct": 4.0,
+    "profit_target_pct": 3.0,
+    "time_stop_days": 5,
+    "max_new_entries_per_day": 2,
+    "rsi2_entry_threshold": 10,
+    "rsi2_exit_threshold": 60,
+    "ibs_entry_threshold": 0.3,
+    "require_above_200ma": true
+  },
+
+  "pead": {
+    "max_days_after_earnings": 5,
+    "max_entries_per_day": 1,
+    "max_risk_pct": 2.0,
+    "hold_days_max": 10
+  },
+
+  "telegram": {
+    "send_daily_report": true,
+    "send_weekly_summary": true,
+    "send_alerts": true
+  },
+
+  "schedule": {
+    "morning_run_et": "07:00",
+    "midday_run_et": "12:00",
+    "eod_run_et": "16:30",
+    "trading_days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+  }
+}

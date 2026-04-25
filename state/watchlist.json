@@ -1,0 +1,23 @@
+{
+  "description": "The agent's stock universe. Sector ETFs are always tracked. Individual stocks are populated dynamically by the morning signal generation step from S&P 500 components.",
+
+  "sector_etfs": [
+    {"ticker": "XLK", "name": "Technology Select Sector SPDR"},
+    {"ticker": "XLF", "name": "Financial Select Sector SPDR"},
+    {"ticker": "XLV", "name": "Health Care Select Sector SPDR"},
+    {"ticker": "XLE", "name": "Energy Select Sector SPDR"},
+    {"ticker": "XLI", "name": "Industrial Select Sector SPDR"},
+    {"ticker": "XLC", "name": "Communication Services Select Sector SPDR"},
+    {"ticker": "XLY", "name": "Consumer Discretionary Select Sector SPDR"},
+    {"ticker": "XLP", "name": "Consumer Staples Select Sector SPDR"},
+    {"ticker": "XLU", "name": "Utilities Select Sector SPDR"},
+    {"ticker": "XLRE", "name": "Real Estate Select Sector SPDR"},
+    {"ticker": "XLB", "name": "Materials Select Sector SPDR"}
+  ],
+
+  "benchmark": "SPY",
+  "volatility_index": "VIX",
+
+  "sp500_source": "Alpaca or pull from Wikipedia/Slickcharts for the current list",
+  "active_candidates": []
+}

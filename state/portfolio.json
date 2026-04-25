@@ -1,0 +1,17 @@
+{
+  "last_updated": null,
+  "last_run": null,
+  "trading_days_completed": 0,
+  "launch_week": true,
+  "account": {
+    "starting_capital": 10000.00,
+    "cash": 10000.00,
+    "portfolio_value": 10000.00,
+    "peak_value": 10000.00,
+    "drawdown_pct": 0.0
+  },
+  "positions": [],
+  "open_orders": [],
+  "paused_until": null,
+  "notes": "Initial state. No positions. Live trading. Launch week mode active."
+}
