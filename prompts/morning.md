@@ -11,9 +11,9 @@ You should have already loaded your memory (CLAUDE.md Step 1) before arriving he
 Check `state/portfolio.json`. If `last_updated` is null, this is the very first run. Execute this bootstrap sequence before proceeding to Phase 1:
 
 ### 0.1 Verify API connections
-- Call Alpaca API: get account info. Confirm cash balance matches starting capital ($10,000).
+- Call Alpaca API: get account info. Record the actual `cash` and `equity` figures — these are your starting capital. Do NOT assume a hardcoded number; on Alpaca paper the default is usually $100,000 but it can be anything.
 - Run a web search: "US stock market overview today". Confirm results come back.
-- Call Telegram API: send a test message ("Trading agent online. First run starting."). Confirm delivery.
+- Call Telegram API: send a test message ("Trading agent online. First run starting. Mode: PAPER. Starting capital: $X."). Confirm delivery.
 
 If Alpaca or Telegram fails, STOP. Log the error. Do not proceed until both are working.
 (Web search is built into Claude -- it does not require a separate API connection.)
@@ -25,17 +25,18 @@ If Alpaca or Telegram fails, STOP. Log the error. Do not proceed until both are 
 - Calculate initial momentum scores (use available historical data from Alpaca).
 
 ### 0.3 Set baseline state
-Update `state/portfolio.json`:
+Update `state/portfolio.json` using the ACTUAL paper-account values from Alpaca (do not invent numbers):
 ```json
 {
   "last_updated": "YYYY-MM-DD HH:MM ET",
   "last_run": "morning",
   "trading_days_completed": 0,
+  "mode": "paper",
   "account": {
-    "starting_capital": 10000.00,
-    "cash": 10000.00,
-    "portfolio_value": 10000.00,
-    "peak_value": 10000.00,
+    "starting_capital": <actual cash from Alpaca>,
+    "cash": <actual cash from Alpaca>,
+    "portfolio_value": <actual equity from Alpaca>,
+    "peak_value": <actual equity from Alpaca>,
     "drawdown_pct": 0.0
   },
   "positions": [],
@@ -45,19 +46,19 @@ Update `state/portfolio.json`:
 }
 ```
 
-Initialize `performance/daily.json` with day zero:
+Initialize `performance/daily.json` with day zero (use the same actual values):
 ```json
 [{
   "date": "YYYY-MM-DD",
-  "portfolio_value": 10000.00,
-  "spy_price": [current SPY price],
-  "spy_baseline": [current SPY price],
+  "portfolio_value": <actual equity>,
+  "spy_close": <current SPY price>,
+  "spy_baseline": <current SPY price>,
   "cumulative_return_pct": 0.0,
   "spy_cumulative_return_pct": 0.0,
   "cumulative_alpha_pct": 0.0,
-  "peak_value": 10000.00,
+  "peak_value": <actual equity>,
   "drawdown_pct": 0.0,
-  "note": "Day zero baseline"
+  "note": "Day zero baseline. Mode: paper. Mission: beat SPY."
 }]
 ```
 
@@ -68,11 +69,13 @@ Create `journal/YYYY-MM-DD.md`:
 
 ## First Run -- Bootstrap
 
-Agent is live. APIs verified. Baseline set.
-- Starting capital: $10,000
+Agent is online. APIs verified. Baseline set.
+- Mode: PAPER
+- Starting capital: $[actual paper cash]
 - SPY baseline: $[price]
 - VIX: [level]
 - Launch week mode: ON (1% risk per trade, max 1 entry/day, max 50% invested)
+- Mission: beat SPY. Every trade I take from here must answer "does this help beat SPY?"
 
 Proceeding to first research and signal generation.
 ```

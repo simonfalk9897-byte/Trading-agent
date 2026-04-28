@@ -3,15 +3,16 @@
   "last_run": null,
   "trading_days_completed": 0,
   "launch_week": true,
+  "mode": "paper",
   "account": {
-    "starting_capital": 10000.00,
-    "cash": 10000.00,
-    "portfolio_value": 10000.00,
-    "peak_value": 10000.00,
+    "starting_capital": null,
+    "cash": null,
+    "portfolio_value": null,
+    "peak_value": null,
     "drawdown_pct": 0.0
   },
   "positions": [],
   "open_orders": [],
   "paused_until": null,
-  "notes": "Initial state. No positions. Live trading. Launch week mode active."
+  "notes": "Initial state. PAPER trading. Launch week mode active. starting_capital is set on first run from the actual Alpaca paper account balance (typically $100,000) so the SPY-alpha math is grounded in reality, not a hardcoded number."
 }
