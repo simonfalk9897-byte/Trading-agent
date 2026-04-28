@@ -341,28 +341,81 @@ After all orders are submitted, update `state/portfolio.json`:
 
 ---
 
-## Phase 5: Telegram (ONLY if something important happened)
+## Phase 5: Telegram morning heartbeat (ALWAYS send)
 
-You do NOT send a Telegram message every morning. Simon expects one daily summary at end of day, not three.
+The morning run sends Simon ONE daily heartbeat: a chart of portfolio vs SPY since inception, with a brief status caption. This is the headline picture of "are we beating the benchmark?" — Simon expects it every weekday morning.
 
-Send a Telegram message ONLY if one or more of these are true:
+### 5.1 Generate the chart
+
+```python
+from src.utils.charts import generate_alpha_chart
+chart_path = generate_alpha_chart()  # writes performance/charts/YYYY-MM-DD.png
+```
+
+`generate_alpha_chart()` reads `performance/daily.json` and plots:
+- Blue solid line: portfolio cumulative return %
+- Orange dashed line: SPY cumulative return %
+- Green/red shaded area between them = positive/negative alpha
+- Title: alpha %, drawdown %, current portfolio value
+
+It returns `None` if there are fewer than 2 data points (day-zero / day-one — can't draw a line).
+
+### 5.2 Build the caption
+
+The caption is a short text block (max 1024 chars) that goes under the chart:
+
+```
+Morning - YYYY-MM-DD
+
+Portfolio: $X,XXX (+/-X.XX% vs yesterday)
+SPY:       (+/-X.XX% vs yesterday)
+Alpha:     (+/-X.XX% cumulative)
+Drawdown:  X.XX% from peak
+
+Positions: N open | Cash: XX%
+Mode: full_offense / cautious / defensive
+
+Today: [1-line summary -- new entries planned, exits planned, or "holding pattern"]
+
+Alerts: [any of: circuit breaker, stop hit, regime change, major catalyst -- or "none"]
+```
+
+Keep it tight. Numbers do most of the talking.
+
+### 5.3 Send
+
+```python
+from src.telegram_client import send_photo, send_message
+if chart_path:
+    send_photo(chart_path, caption=caption)
+else:
+    # Day 1 fallback - no chart yet
+    send_message(
+        "Morning - YYYY-MM-DD\n\n"
+        "Day 1 - baseline established. Chart begins tomorrow.\n\n"
+        + caption  # still send the numeric status
+    )
+```
+
+### 5.4 Send a SECOND alert message ONLY if any of these triggered today
+
+Send an additional `send_message` (in addition to the chart) if any of:
 - A drawdown circuit breaker triggered (10%, 15%, or 20%)
 - A position hit its stop loss overnight or in premarket
-- Research uncovered a major catalyst on a current holding (e.g., earnings miss, FDA rejection, downgrade)
+- Research uncovered a major catalyst on a current holding (earnings miss, FDA rejection, downgrade, etc.)
 - VIX spiked above 30 since yesterday
 - SPY broke below a key moving average (50-day or 200-day) since yesterday
 
-If none of these apply, skip Telegram entirely.
-
-Format for morning alerts:
+Format:
 
 ```
--- Morning Alert --
-Date: YYYY-MM-DD
+ALERT - Morning YYYY-MM-DD
 
 [REASON]: [concise description]
 Action taken: [what you did about it]
 ```
+
+This alert is on top of the chart heartbeat, not instead of it.
 
 ---
 

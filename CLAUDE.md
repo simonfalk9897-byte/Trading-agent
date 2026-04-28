@@ -128,9 +128,14 @@ If git push fails, retry once. If it fails again, log the error and continue. Do
 
 ### Telegram Rules
 21. EOD run: ALWAYS send the daily summary. Simon expects this every trading day.
-22. Morning and midday runs: ONLY send a message if something important happened
-    (circuit breaker triggered, stop hit, regime change, major catalyst on a holding).
-23. Do not spam Simon. One guaranteed message per day at EOD. Alerts only when needed.
+22. Morning run: ALWAYS send a portfolio-vs-SPY chart with a brief status caption
+    (this is the daily heartbeat -- Simon's "are we beating the benchmark?" check).
+    Use `src/utils/charts.py:generate_alpha_chart()` + `telegram_client.send_photo()`.
+    On day 1 (only one data point), fall back to a text status message instead.
+23. Midday run: ONLY send a message if something important happened (circuit breaker
+    triggered, stop hit, regime change, major catalyst on a holding).
+24. On top of the morning chart and EOD summary, send an extra alert ANY run if a
+    circuit breaker fires or a stop is hit. Beyond that, do not spam Simon.
 
 ---
 
@@ -164,6 +169,7 @@ performance/
   daily.json                       <-- Daily portfolio value, SPY value, returns, alpha, drawdown
   weekly.json                      <-- Weekly rollups (updated Friday EOD)
   monthly.json                     <-- Monthly rollups (updated last trading day of month)
+  charts/YYYY-MM-DD.png            <-- Morning portfolio-vs-SPY chart sent to Telegram
 
 STRATEGY.md                        <-- Full strategy document: entry/exit rules, position sizing,
                                        risk management, sector rotation logic
@@ -183,6 +189,7 @@ src/                               <-- Python source code (you call these, not e
   risk/market_regime.py            <-- VIX and trend regime detection
   utils/state_manager.py           <-- Read/write state files
   utils/git_manager.py             <-- Git commit + push
+  utils/charts.py                  <-- Daily portfolio-vs-SPY chart generator
   utils/performance_tracker.py     <-- P&L and benchmark tracking
 
 .env                               <-- API keys (ALPACA_KEY, ALPACA_SECRET,
