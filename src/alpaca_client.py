@@ -20,13 +20,22 @@ def _retry(fn, *args, **kwargs):
         return fn(*args, **kwargs)
 
 
+def _is_paper() -> bool:
+    """Paper if ALPACA_BASE_URL points at paper-api, else live.
+
+    Defaults to paper for safety when the var is unset.
+    """
+    url = os.environ.get("ALPACA_BASE_URL", "")
+    return "paper" in url.lower() or url == ""
+
+
 @lru_cache(maxsize=1)
 def _trading_client():
     from alpaca.trading.client import TradingClient
 
     key = os.environ["ALPACA_KEY"]
     secret = os.environ["ALPACA_SECRET"]
-    return TradingClient(key, secret, paper=False)
+    return TradingClient(key, secret, paper=_is_paper())
 
 
 @lru_cache(maxsize=1)
