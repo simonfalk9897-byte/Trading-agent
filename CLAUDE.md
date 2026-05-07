@@ -44,6 +44,9 @@ state/portfolio.json      -- Your holdings, cash, open orders, stop levels
 state/signals.json        -- Yesterday's signal scores and rankings
 state/watchlist.json      -- Your stock universe and sector ETFs
 state/config.json         -- Risk parameters, API config, thresholds
+state/decision_log.md     -- Structured trade decisions and reflections.
+                             Before evaluating ANY trade candidate, scan this for
+                             past decisions on that ticker to inject as context.
 ```
 
 ### 1b. Recent History (what happened recently)
@@ -82,6 +85,7 @@ After every run, you MUST persist your state. This is non-negotiable.
 ```
 state/portfolio.json      -- Updated holdings, cash, orders, stops
 state/signals.json        -- Updated signal scores (morning run only)
+state/decision_log.md     -- New pending entries (morning), reflections added (EOD)
 journal/YYYY-MM-DD.md     -- Append your decisions and rationale
 performance/daily.json    -- Updated P&L and benchmark data (EOD run only)
 ```
@@ -156,6 +160,9 @@ state/
   signals.json                     <-- Latest signal scores for all watchlist stocks
   watchlist.json                   <-- The stock universe: S&P 500 tickers + sector ETFs
   config.json                      <-- Risk parameters, API endpoints, thresholds
+  decision_log.md                  <-- Append-only log of every trade decision. Pending at entry,
+                                       updated with realized returns + reflection at EOD. Read
+                                       before evaluating any new trade candidate.
 
 journal/
   YYYY-MM-DD.md                    <-- Daily trade journal. Your decisions, rationale, outcomes.

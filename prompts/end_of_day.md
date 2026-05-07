@@ -92,6 +92,42 @@ If today is the last trading day of the month:
 
 ---
 
+## Phase 2b: Update Decision Log (estimated 1-2 minutes)
+
+### 2b.1 Identify closed positions today
+From your reconciled order list (step 1.2), identify every position that was fully closed today — whether by a sell order, a stop-loss hit, a profit target, or a time stop.
+
+For each closed position:
+- Raw return % = `(exit_price - entry_price) / entry_price`
+- Alpha = raw return % minus SPY's return over the same holding period
+- Holding days = days from entry date to today
+
+### 2b.2 Write reflections to decision log
+For each closed position, find its pending entry in `state/decision_log.md` (the entry whose tag contains the ticker and ends in `| pending]`).
+
+Update it by:
+1. Replacing the tag line with the resolved tag:
+   `[entry_date | TICKER | action | raw_return% | alpha% | Nd]`
+   Example: `[2026-05-07 | NVDA | BUY-MOMENTUM | +3.2% | +1.8%α | 4d]`
+
+2. Appending a REFLECTION section after the DECISION block:
+
+```
+REFLECTION:
+Was the bull case right? [yes/no — why]
+Was the bear case right? [yes/no — why]
+What worked: [specific observation]
+What missed: [specific observation]
+Lesson: [one concrete, actionable takeaway for next time on this ticker or setup]
+```
+
+Also resolve any PASS entries from the same day: update their tag with `| skipped]` and add a brief reflection on whether the pass was the right call given what actually happened to the stock today.
+
+### 2b.3 Save the decision log
+Write the updated `state/decision_log.md`. The file must be saved before the Telegram report is sent (you will reference it in the report).
+
+---
+
 ## Phase 3: Daily Journal -- Reflection (estimated 2-3 minutes)
 
 This is the most important part of the EOD run. Your journal is your memory. Future runs will read this to make better decisions.
@@ -172,9 +208,16 @@ Risk:
   Drawdown: [X%] from peak
   VIX: [X] | Regime: [offense/cautious/defensive]
 
+Today's Lessons:
+  [TICKER] ([+/-X%], [+/-X%]α): [one-line lesson from decision log reflection]
+  [TICKER] ([+/-X%], [+/-X%]α): [one-line lesson from decision log reflection]
+  (omit this section if no positions were closed today)
+
 Notes:
   [1-2 sentences on the day's key takeaway]
 ```
+
+The "Today's Lessons" lines come directly from the REFLECTION entries you wrote in Phase 2b. Each line should be a single punchy takeaway Simon can absorb in 5 seconds.
 
 ### Alert-level messages (send IMMEDIATELY, not just at EOD):
 - Drawdown > 15%: "WARNING: Portfolio drawdown at [X%]. Reducing exposure."
@@ -225,7 +268,7 @@ Based on today's closing data:
 
 ## Phase 6: Save and Push
 
-1. Save all modified files
+1. Save all modified files (including `state/decision_log.md`)
 2. Git add all changes in state/, journal/, research/, performance/
 3. Git commit: "agent run: eod YYYY-MM-DD"
 4. Git push

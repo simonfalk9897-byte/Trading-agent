@@ -229,6 +229,13 @@ Write all scores and rankings to `state/signals.json`:
 
 Work through this checklist in order. Do not skip steps.
 
+### 3.0 Load decision log context (do this BEFORE evaluating any candidate)
+Read `state/decision_log.md`. For each trade candidate you are considering today:
+- Find the last 3 resolved entries for that ticker (tag contains the ticker name and does NOT end in `| pending]`)
+- Find the last 2 resolved entries for any other ticker (cross-ticker lessons)
+
+Hold this context in mind during steps 3.3 and 3.4. It tells you what happened last time you were in a similar setup with this stock.
+
 ### 3.1 Regime check (do this FIRST, before any trade decisions)
 Read the regime data from signals. Apply the rules:
 
@@ -288,6 +295,33 @@ Only if you have capacity (cash > 20%, not in drawdown pause):
   - Position size: smaller (1-2% risk), shorter hold (5-10 days)
   - Maximum 1 PEAD entry per day
 
+### 3.4b Bull/Bear debate (run this for EVERY candidate before committing)
+For each candidate that has survived steps 3.1–3.4, run this structured debate before deciding to enter. Do not skip it. This is where overconfidence gets caught.
+
+```
+TICKER: [TICKER] | STRATEGY: [MOMENTUM / MEAN-REVERSION / PEAD]
+
+PAST CONTEXT (from decision_log.md):
+[Paste last 3 same-ticker entries if they exist, or "No prior entries for this ticker"]
+
+BULL CASE:
+- [Sector rank / momentum score / RSI / volume / catalyst]
+- [Price vs key MAs]
+- [Any supporting research finding]
+- [Why this is a good setup RIGHT NOW]
+
+BEAR CASE:
+- [What could go wrong: overextension, macro risk, earnings proximity, sector weakness]
+- [Stop distance vs expected return: is the risk/reward worth it?]
+- [Anything from past context suggesting this setup has failed before]
+- [What your research did NOT conclusively rule out]
+
+VERDICT: [BUY / PASS / WATCH]
+RATIONALE: [1-2 sentences. If PASS or WATCH, state what would change your mind.]
+```
+
+Only entries with VERDICT = BUY proceed to execution. If you write PASS or WATCH, the candidate is done for today — do not revisit it in the same run.
+
 ### 3.5 Write your reasoning
 Before executing any trades, write to `journal/YYYY-MM-DD.md`:
 
@@ -332,6 +366,34 @@ Process new entries:
 - Use limit orders at or slightly below the current ask
 - Immediately set a linked stop-loss order for each entry
 - Log every order ID in `state/portfolio.json`
+
+### 4.3b Write pending entries to decision log
+For every order submitted in 4.3, immediately append a pending entry to `state/decision_log.md`:
+
+```
+[YYYY-MM-DD | TICKER | BUY-MOMENTUM or BUY-REVERSION or BUY-PEAD | pending]
+
+DECISION:
+Bull case: [copy the bull case from your 3.4b debate, condensed to 2-3 lines]
+Bear case: [copy the bear case, condensed to 2-3 lines]
+Verdict: BUY — [your 1-2 sentence rationale from 3.4b]
+Entry: $[price] | Stop: $[stop] | Strategy: [type]
+
+<!-- ENTRY_END -->
+```
+
+Also append a PASS entry for every candidate that reached 3.4b but was rejected (VERDICT = PASS). These are valuable — they show what you considered and why you held back:
+
+```
+[YYYY-MM-DD | TICKER | PASS-MOMENTUM or PASS-REVERSION | pending]
+
+DECISION:
+Bull case: [summary]
+Bear case: [summary]
+Verdict: PASS — [reason]
+
+<!-- ENTRY_END -->
+```
 
 ### 4.4 Update portfolio state
 After all orders are submitted, update `state/portfolio.json`:
